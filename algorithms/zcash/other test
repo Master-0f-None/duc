@@ -1,0 +1,179 @@
+// func compress_array(inp, out_len, bit_len, byte_pad)
+	{
+		var word_size uint = 32
+		var word_mask uint = (1 << word_size) - 1
+		var byte_pad uint = 0
+		var out_len uint = 0
+		var bit_len uint = 0
+		var in_width uint= 0
+		//var out [out_len]byte = 0
+		inp := Solutions.Values[i]
+
+	//	if bit_len >= 8 && word_size >= 7+bit_len {
+		in_width = (bit_len+7)/8 + byte_pad
+	//	}
+
+	//	var foo int = len(inp)
+	//	InpLen := uint(foo)
+
+	//	if out_len == bit_len*InpLen/(8* in_width) {
+			//	out  bytearray(out_len)
+	//		out := [out_len]byte
+			var out = make([]byte,out_len)
+	//	}
+		var bit_len_mask= (1 << bit_len) - 1
+
+		//	The acc_bits least-significant bits of acc_value represent a bit sequence
+		//	in big-endian order.
+		var acc_bits= 0
+		var acc_value= 0
+
+		var j= 0
+
+	//	for i in xrange(out_len):
+		for _, i := range out {
+		{
+			//	When we have fewer than 8 bits left in the accumulator, read the next
+			//	input element.
+			if acc_bits < 8 {
+				acc_value = ((acc_value << bit_len) & word_mask) | inp[j]
+
+				for x in range (byte_pad, in_width)
+				//	Apply bit_len_mask across byte boundaries
+				acc_value = acc_value | (inp[j+x] & ((bit_len_mask >> (8 * (in_width - x - 1))) & 0xFF) << (8 * (in_width - x - 1))) // # Big-endian
+				j += in_width
+				acc_bits += bit_len
+
+				acc_bits -= 8
+				out[i] = (acc_value >> acc_bits) & 0xFF
+
+				var outFinal = out
+				log.Println("outFinal", outFinal)
+			}
+
+		}
+	}
+
+
+///todo - working
+
+			outerz := Solar(Solutions, validz)
+			log.Println("outerz", outerz)
+
+			var word_size byte = 32				//word_size 32
+			var word_mask byte = (1 << word_size) - 1   //word_mask 4294967295
+
+
+			var byte_pad byte = 0
+			var out_len byte = 8
+			var bit_len byte = 0
+
+			//Convert Solution value in array to a uint / element
+
+			var in_width byte = (bit_len+7)/8 + byte_pad
+			var out= make([]byte, out_len)
+
+			log.Println("out", out)
+
+			var acc_bits byte = 0
+			var acc_value byte = 0
+			var j byte = 0
+			var bit_len_mask byte = (1 << bit_len) - 1   // bit_len_mask = 65535
+			// log.Println("bit_len_mask", bit_len_mask)
+									//(len(inp)) = 12
+			//var x byte = 0				//out_width 2
+			//Put values into a map for x range below
+			mymap := map[int]byte{
+				1: byte_pad,
+				2: in_width,
+			}
+
+		//	for _, i := range out {
+			for i := 0; i < int(out_len); i++ {
+				log.Println("xxxxxxxxxxxxx")
+				{
+					//	When we have fewer than 8 bits left in the accumulator, read the next
+					//	input element.
+					if acc_bits < 8 {
+						acc_value = ((acc_value << bit_len) & word_mask) | outerz[j]
+
+						for _, x := range mymap {
+							//	Apply bit_len_mask across byte boundaries
+							acc_value = acc_value | (outerz[j+x] & ((bit_len_mask >> (8 * (in_width - x - 1))) & 0xFF) << (8 * (in_width - x - 1))) // # Big-endian
+							j += in_width
+							acc_bits += bit_len
+
+							acc_bits -= 8
+							out[i] = (acc_value >> acc_bits) & 0xFF
+						}
+
+						var outFinal= out
+						log.Println("outFinal", outFinal)
+					}
+
+				}
+			}
+
+		}
+	}
+}
+
+func Solar(Solutions *Solst, validz int) (outerz []byte) {
+	for i := 0; i < int(Solutions.nr); i++ {
+		if Solutions.valid[i] > 0 {
+
+			for t := 0; t < validz; t++ {
+
+				inp := Solutions.Values[i][t]
+				ch := make(chan uint32, 5000)
+				ch <- inp
+				inputz := <-ch
+
+				var iTest uint32 = inputz
+				var bTest []byte = make([]byte, 4)
+				endian.Endian.PutUint32(bTest, uint32(iTest)) /// yields bytes
+				//	 binary.LittleEndian.PutUint32(bTest, uint32(iTest)) /// yields littleendian hex
+				//	 btest2 := hex.EncodeToString(bTest) /// yields the string
+				outerz = append(outerz, bTest[0])
+
+
+			}
+		}
+
+	}
+	return outerz
+
+
+
+}
+
+//todo
+
+var buffer bytes.Buffer
+			for fuck := 0; fuck < 512; fuck++ {
+				ch := make(chan uint32, 512)
+				ch <- Solutions.Values[i][fuck]
+				v := <-ch //uint32
+				//	fmt.Println("vvvvvv", v)
+
+		//		var iTest uint32 = v
+		//		var bTest []byte = make([]byte, 4)
+		//		endian.Endian.PutUint32(bTest, uint32(iTest))       /// yields bytes
+		//		binary.LittleEndian.PutUint32(bTest, uint32(iTest)) /// yields littleendian hex
+				//	log.Println("bTest", bTest)
+		//		btest2 := hex.EncodeToString(bTest) /// yields the string
+				//	log.Println("btest2", btest2)
+		//		buffer.WriteString(btest2)
+		//	}
+			//	s1 := buffer.String()
+				//	if fuck > 510 {
+				//		log.Println("xxxxxxxxxxxxxxxxxxxxxxx", s1)
+
+
+
+			//	go func() {
+
+			//		if e := miner.Client.SubmitSolution(s1 , solutionsFound, header, target, job); e != nil {
+			//			log.Println(miner.MinerID, "- Error submitting solution -", e)
+			//		}
+			//	}()

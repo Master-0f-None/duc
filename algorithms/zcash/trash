@@ -1,0 +1,332 @@
+myValue := Solutions  //solst
+			pointer := unsafe.Pointer(&myValue)
+			fmt.Printf("pointr: %v valid: %d Values: %s\n",
+				pointer,
+				myValue.valid,
+				myValue.Values)
+
+
+			sliceA := myValue.Values[0:10]
+			slice0 := myValue.Values[0:1]
+			slice1 := myValue.Values[0:2]
+			slice2 := myValue.Values[0:3]
+			slice3 := myValue.Values[0:4]
+			slice4 := myValue.Values[0:5]
+			slice5 := myValue.Values[0:6]
+			slice6 := myValue.Values[0:7]
+			slice7 := myValue.Values[0:8]
+			slice8 := myValue.Values[0:9]
+			slice9 := myValue.Values[0:10]
+			inspectSlice(sliceA)
+			inspectSlice(slice0)
+			inspectSlice(slice1)
+			inspectSlice(slice2)
+			inspectSlice(slice3)
+			inspectSlice(slice4)
+			inspectSlice(slice5)
+			inspectSlice(slice6)
+			inspectSlice(slice7)
+			inspectSlice(slice8)
+			inspectSlice(slice9)
+
+
+
+			substring := Solutions.Values[9:len(Solutions.Values)]
+			fmt.Println("substring", substring)
+
+
+
+func inspectSlice(slice [][512]uint32) {
+	fmt.Printf("Length[%d] Capacity[%d]\n", len(slice), cap(slice))
+	for i, v := range slice {
+		fmt.Printf("[%d] %p %s\n",
+			i,
+			&slice[i],
+			v)
+	}
+}
+//todo ---REMEMBER strings are bytes
+//todo  find out what is in a string - index bytes of string aka indexing a string gives its bytes
+const sample = "\xbd\xb2\x3d\xbc\x20\xe2\x8c\x98"
+
+ for i := 0; i < len(sample); i++ {
+        fmt.Printf("%x ", sample[i])      //prints the hex values of the sample
+    }
+
+ todo OR
+ fmt.Printf("%x\n", sample)          // %x does the same thing
+
+//todo  LEARNED STUFF
+
+
+			//inputFmt := Solutions.Values[0:len(Solutions.Values)-9]
+			//fmt.Println("inputFmt", inputFmt)
+
+			//final := Solutions.Values[2][9:len(Solutions.Values)]
+			//s := make([]uint32, len(Solutions.Values))
+			//s(0) = final
+			//final2 := append (s,(Solutions.Values[2][9:len(Solutions.Values)]))
+			//fmt.Println("final", final)
+			//fmt.Println("final2", final2)
+
+			//header := append([]byte(nil), Solutions.Values...)
+
+			//bs := []byte(strconv.Itoa(final))
+			//fmt.Println(bs)
+
+///todo
+
+			inputFmt := Solutions.Values[0:len(Solutions.Values)-9]
+			fmt.Println("inputFmt", inputFmt)
+
+			ggg := Solutions.Values[0][0]
+			log.Println("ggggggg", ggg)
+
+			var slice []uint32 = Solutions.Values[0][0:3]
+			log.Println("slice", slice)
+
+			//ch := make(chan []uint32, 512)
+			//ch <- slice
+			//v := <-ch
+
+			ch := make(chan uint32, 512)
+			ch <- ggg
+			v := <-ch
+			fmt.Println("v", v)
+
+		//	///Gives results in bytes
+		//	for i := 0; i < len(Solutions.Values); i++ {
+		//		fmt.Printf("%x ", Solutions.Values[i])
+		//	}
+
+			for i := 0; i < len(Solutions.Values); i++ {
+				fmt.Printf("%x ", Solutions.Values[i])
+
+				ch := make(chan uint32, 512)
+				ch <- Solutions.Values[][i]
+				v := <-ch
+				fmt.Println("v", v)
+
+
+
+///todo////////////////////////////////////////////////////////////////////////////////////////////
+
+
+			var buffer bytes.Buffer
+			for fuck := 0; fuck < 512; fuck++ {
+				ch := make(chan uint32, 512)
+				ch <- Solutions.Values[i][fuck]
+				v := <-ch //uint32
+				//	fmt.Println("vvvvvv", v)
+
+				var iTest uint32 = v
+				var bTest []byte = make([]byte, 4)
+
+				endian.Endian.PutUint32(bTest, uint32(iTest))       /// yields bytes
+				binary.LittleEndian.PutUint32(bTest, uint32(iTest)) /// yields littleendian hex
+				//	log.Println("bTest", bTest)
+				btest2 := hex.EncodeToString(bTest) /// yields the string
+				//	log.Println("btest2", btest2)
+				buffer.WriteString(btest2)
+			}
+				s1 := buffer.String()
+				//	if fuck > 510 {
+				//		log.Println("xxxxxxxxxxxxxxxxxxxxxxx", s1)
+
+
+
+				go func() {
+
+					if e := miner.Client.SubmitSolution(s1 , solutionsFound, header, target, job); e != nil {
+						log.Println(miner.MinerID, "- Error submitting solution -", e)
+					}
+				}()
+
+//todo-------------------------------------------------------------------------------------------------------
+
+func storeSol(out uint8, inputs , n uint32 ){
+
+		type AliasInt32 *int32
+		type AliasUint32 *uint32
+		type AliasUint8 *uint8
+	var byte_pos uint32 = 0			//
+	var bits_left uint32 = prefix + 1 	//x
+	var x uint8 = 0				//
+	var x_bits_used uint8 = 0		//y
+		var AliasBits_left *uint8 = &bits_left   //#1
+
+
+		while (byte_pos < n)
+		{
+			if *AliasBits_left >= (8 - x_bits_used)	{	//#1
+
+				x |= inputs[byte_pos] >> (*AliasBits_left - 8 + x_bits_used) 	//#1
+				*AliasBits_left -= 8 - x_bits_used
+				x_bits_used = 8
+			} else if *AliasBits_left > 0{
+				var mask uint32
+				mask = ^(-1 << (8 - x_bits_used))
+				mask = ((^mask) >> bits_left) & mask
+				x |= (inputs[byte_pos] << (8 - x_bits_used - *AliasBits_left)) & mask
+				x_bits_used += *AliasBits_left
+				bits_left = 0
+			}else if *AliasBits_left <= 0{
+				//		 !bits_left
+						byte_pos++
+						bits_left = prefix + 1
+					}
+				if x_bits_used = 8; *out++ {
+						*out = x
+						x = 0
+						x_bits_used = 0
+					}
+		}
+	}
+
+
+			inputs := Solutions.Values[i]
+
+		//	type AliasInt32 *int32
+		//	type AliasUint32 *uint32
+		//	type AliasUint8 *uint8
+		//	const MaxUint = ^uint(0)
+			var byte_pos uint32 = 0                //
+			var bits_left int32 = prefix + 1      //x
+			var x uint8 = 0                        //
+			var x_bits_used uint8 = 0              //y
+
+		//	var AliasBits_left *uint8 = &bits_left //#1
+		//	var Aliasinputs AliasUint8 = &inputs
+
+			if byte_pos < n{
+
+				if bits_left >= (8 - x_bits_used) { //#1
+
+					x |= inputs[byte_pos] >> (bits_left - 8 + x_bits_used) //#1
+					bits_left -= 8 - x_bits_used
+					x_bits_used = 8
+				} else if bits_left > 0 {
+					var mask uint32
+					mask = ^(-1 << (8 - x_bits_used))
+					mask = ((^mask) >> bits_left) & mask
+					x |= (inputs[byte_pos] << (8 - x_bits_used - bits_left)) & mask
+					x_bits_used += bits_left
+					bits_left = 0
+				} else if bits_left <= 0 {
+					//		 !bits_left
+					byte_pos++
+					bits_left = prefix + 1
+				}
+				if x_bits_used = 8; *out++ {
+			*out = x
+			x = 0
+			x_bits_used = 0
+			}
+			}
+		}
+
+
+		//todo
+		buf := new(bytes.Buffer)
+        binary.Write(buf, binary.BigEndian, value)
+        binary.Write(buf, binary.BigEndian, value2)
+        data := buf.Bytes()
+
+
+  func Solar(num int, slice  []uint32) (resultz string)  {
+     	valuesText := []string{}
+	for i := range slice {
+		      number := slice[i]
+		h := fmt.Sprintf("%x", number)
+		                 valuesText = append(valuesText, h)
+    }
+     		   result := strings.Join(valuesText, "")
+	              fmt.Println(result)
+	                        return result
+	}
+
+
+
+	//	log.Println("sliceExtract", sliceExtract)
+    				//	 fmt.Printf("BigEndian Hex-0 %02x\n", Extract4th[0]) //todo
+    				//	fmt.Printf("BigEndian Hex-1 %02x\n", Extract4th[1])          	//todo
+    				//	 fmt.Printf("BigEndian Hex-2 %02x\n", Extract4th[2])        	//todo
+    				//	  fmt.Printf("BigEndian Hex-3 %02x\n", Extract4th[3])        	//todo
+
+
+
+
+
+
+
+
+
+  var inputs= Solutions.Values[i]
+
+  			var n uint32 = 512
+
+  			var byte_pos uint32 = 0
+  			var bits_left uint32 = prefix + 1
+  			var x uint32 = 0
+  			var x_bits_used uint32 = 0
+  			slice := make([]uint32, 0)
+  			const MaxUint= ^uint32(0)
+
+  			for ; byte_pos < n; {
+
+  				if bits_left >= 8-x_bits_used {
+
+  					x |= inputs[byte_pos] >> (bits_left - 8 + x_bits_used)
+  					bits_left -= 8 - x_bits_used
+  					x_bits_used = 8
+
+  				} else if bits_left > 0 {
+  					var mask uint32 = ^(MaxUint << (8 - x_bits_used))
+  					mask = ((^mask) >> bits_left) & mask
+  					x |= (inputs[byte_pos] << (8 - x_bits_used - bits_left)) & mask
+  					x_bits_used += bits_left
+  					bits_left = 0
+  				} else if bits_left <= 0 {
+  					byte_pos++
+  					bits_left = prefix + 1
+
+  				}
+  				if x_bits_used == 8 {
+  					slice = append(slice, x)
+  					x = 0
+  					x_bits_used = 0
+  				}
+  			}
+
+  			fmt.Printf("len=%d cap=%d slice=%v\n", len(slice), cap(slice), slice)    //todo
+
+
+int32_t cmp_target_256(void *_a, void *_b)
+{
+printf("ccccccccccccccccccccccccccccccccccccccccccccc:   \n");
+    uint8_t	*a = _a;
+    uint8_t	*b = _b;
+    int32_t	i;
+    for (i = SHA256_TARGET_LEN - 1; i >= 0; i--)
+	if (a[i] != b[i])
+	    return (int32_t)a[i] - b[i];
+    return 0;
+}
+
+func sol_cmp( *_a, *_b) {
+	*a = _a
+
+	*b = _b
+
+	for i := 0; i < int(Solutions.nr); i++ {
+
+
+	for i := 0; i < (1 << PARAM_K); i++ {
+		if (*a != *b)
+			return *a - *b;
+
+	a++;
+	b++;
+	}
+	return 0
+}

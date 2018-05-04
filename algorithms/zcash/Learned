@@ -1,0 +1,120 @@
+//todo - insert into slice
+
+	for i := 0; i < 32; i++ {
+		header = insert(header, 68, 0 )
+	}
+
+func insert(header []byte, at int, val byte) []byte {
+
+	header = append(header, 0)		// Make sure there is enough room
+
+	copy(header[at+1:], header[at:])	// Move all elements of s up one slot
+
+	header[at] = val			// Insert the new element at the now free position
+	return header
+}
+
+//todo-----------------------------------------------------------------------------------------------------------
+
+//todo Function with error -- may prevent some Go Errors
+
+var xxx = "24253fabf03234"
+
+val := MustGet(xxx)
+
+log.Print("val", val)
+
+
+func MustGet(value string) []byte {
+	i, err := hex.DecodeString(value)
+
+	if err != nil {
+		panic(err)
+	}
+	return i
+}
+
+//todo-----------------------------------------------------------------------------------------------------------
+
+//todo Assign 0 to an int
+
+for i := uint32(0); i < size;
+
+//todo-----------------------------------------------------------------------------------------------------------
+//todo convert int to byte
+
+h := (uint32)(((fh.year*100+fh.month)*100+fh.day)*100 + fh.h)
+a := make([]byte, 4)
+binary.LittleEndian.PutUint32(a, h)
+
+
+//todo-----------------------------------------------------------------------------------------------------------
+//todo Convert String to Hex
+
+	// Input string.
+	s := "AAA"
+
+	// Format as "\x41\x41\x41".
+	var hs string
+	for _, v := range s {
+		hexCode := hex.EncodeToString([]byte(string(v)))
+		hs += hexCode
+	}
+	fmt.Println(hs)
+
+	// Format as "414141".
+	log.Println("mustget xxx ", header)
+
+	fmt.Println(hex.EncodeToString([]byte(s)))
+
+//todo-----------------------------------------------------------------------------------------------------------
+//todo Write Big or Little ENdian from variable
+
+	buf := new(bytes.Buffer)
+	//var pi float64 = math.Pi
+	erro := binary.Write(buf, binary.BigEndian, sj.ExtraNonce2.Bytes())
+	if err != nil {
+		fmt.Println("binary.Write failed:", erro)
+	}
+
+	fmt.Printf("% x\n", buf.Bytes())
+
+
+
+//todo-----------------------------------------------------------------------------------------------------------
+//todo convert bytes to uint32 for hash
+
+
+hash := []byte(yippee)
+
+			var OurHash uint32
+
+			l := len(hash)
+			for i, b := range hash {
+				shift := uint32((l-i-1) * 8)
+
+				OurHash |= uint32(b) << shift
+			}
+
+//todo-----------------------------------------------------------------------------------------------------------
+//todo reverse order in array
+
+func reverse(numbers []uint8) []uint8{
+	newNumbers := make([]uint8, len(numbers))
+	for i, j := 0, len(numbers)-1; i < j; i, j = i+1, j-1 {
+		newNumbers[i], newNumbers[j] = numbers[j], numbers[i]
+	}
+	return newNumbers
+}
+
+//todo-----------------------------------------------------------------------------------------------------------
+//todo Convert Hex String to Byte Slice
+
+func MustGet(value string) []byte {
+	i, err := hex.DecodeString(value)
+
+	if err != nil {
+		panic(err)
+	}
+	return i
+}
